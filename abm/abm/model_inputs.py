@@ -19,11 +19,10 @@ clsf_folder_path : str
 regr_folder_path : str
     Path to the folder where the ML regressor model and the name of its
     features are located
-    
-ml_dataset : str
-    Path to the dataset needed to train the ML models during the instantiation
-    of the ABM
 
+municipalities_pcf_path : str
+    Path to the file with the list of names of the municipalities involved in
+    the PCF project, where payments were offered
 """
 
 sbp_payments_path = (pathlib.Path(__file__).parent.parent / 'data'
@@ -35,5 +34,5 @@ clsf_folder_path = (pathlib.Path(__file__).parent.parent / 'ml_model'
 regr_folder_path = (pathlib.Path(__file__).parent.parent / 'ml_model'
                     / 'regressor')
 
-ml_dataset = (pathlib.Path(__file__).parent.parent
-              / 'Municipalities final dataset for analysis.csv')
+municipalities_pcf_path = (pathlib.Path(__file__).parent.parent / 'data'
+                           / 'municipalities_adoption_PCF.csv')

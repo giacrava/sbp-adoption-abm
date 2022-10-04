@@ -1,11 +1,11 @@
-Average total RMSE: 0.008489152530176996
-Total RMSE standard deviation: 6.692916305948686e-05
-Average total relative RMSE: 0.8417450578136826
-Total relative RMSE standard deviation: 0.0066363859088010135
-Average total MAE: 0.001904137098288584
-Total MAE standard deviation: 4.3686572647811834e-05
-Average total adjusted R2 score: 0.28874593454125763
+Average total RMSE: 0.008406594830425173
+Total RMSE standard deviation: 7.511379451733369e-05
+Average total relative RMSE: 0.8362846817989092
+Total relative RMSE standard deviation: 0.007472290150024997
+Average total MAE: 0.001973014802274298
+Total MAE standard deviation: 4.670099357835361e-05
+Average total adjusted R2 score: 0.2979437737939966
 Total adjusted R2 score standard deviation: 0.0
  
-Total OBSERVED number of times any municipality does NOT adopt 1996-2012: 2242
-Average total PREDICTED number of times any municipality does NOT adopt 1996-2012: 2463
+Total OBSERVED number of times any municipality does NOT adopt 1996-2012: 2190
+Average total PREDICTED number of times any municipality does NOT adopt 1996-2012: 2548

@@ -16,7 +16,8 @@ import mesa_geo
 
 from . import agents
 from .mapping_class import mappings
-from .model_inputs import sbp_payments_path, clsf_folder_path, regr_folder_path
+from .model_inputs import (sbp_payments_path, clsf_folder_path,
+                           regr_folder_path, municipalities_pcf_path)
 from .custom_transformers import (TransformCensusFeatures,
                                   TransformClimateFeatures,
                                   TransformSoilFeatures)
@@ -63,6 +64,7 @@ class SBPAdoption(mesa.Model):
                  ml_regr_folder=regr_folder_path,
                  initial_year=1996,
                  sbp_payments_path=sbp_payments_path,
+                 municipalities_pcf_path=municipalities_pcf_path,
                  seed=None):
         """
         Initalization of the model.
@@ -81,6 +83,9 @@ class SBPAdoption(mesa.Model):
         regr_folder_path : path str
             Path to the folder where the ML regressor model and the name of its
             features are located
+        municipalities_pcf_path : path str
+            Path to the file with the list of names of the municipalities
+            involved in the PCF project, where payments were offered
         seed : int
             Seed for pseudonumber generation
 
@@ -107,7 +112,8 @@ class SBPAdoption(mesa.Model):
         self._ml_regr_feats = None
         self._upload_ml_models(ml_clsf_folder, ml_regr_folder)
 
-        self.government = self._initialize_government(sbp_payments_path)
+        self.government = self._initialize_government(sbp_payments_path,
+                                                      municipalities_pcf_path)
 
         self.perm_pastures_ref_port = None
         self.yearly_adoption_ha_port = None
@@ -184,36 +190,37 @@ class SBPAdoption(mesa.Model):
             os.path.join(ml_clsf_folder, 'model.pkl')
             )
         self._ml_clsf_feats = self._retrieve_ml_features(
-             os.path.join(ml_clsf_folder, 'features.csv')
-             )
-        clsf_dataset = np.genfromtxt(
-            os.path.join(ml_clsf_folder, 'dataset.csv'), delimiter=','
-            )
-        clsf_labels = np.genfromtxt(
-            os.path.join(ml_clsf_folder, 'labels.csv'), delimiter=','
-            )
-        self._ml_clsf.fit(clsf_dataset, clsf_labels)
+              os.path.join(ml_clsf_folder, 'features.csv')
+              )
+        # clsf_dataset = np.genfromtxt(
+        #     os.path.join(ml_clsf_folder, 'dataset.csv'), delimiter=','
+        #     )
+        # clsf_labels = np.genfromtxt(
+        #     os.path.join(ml_clsf_folder, 'labels.csv'), delimiter=','
+        #     )
+        # self._ml_clsf.fit(clsf_dataset, clsf_labels)
 
         self._ml_regr = joblib.load(
             os.path.join(ml_regr_folder, 'model.pkl')
             )
         self._ml_regr_feats = self._retrieve_ml_features(
-             os.path.join(ml_regr_folder, 'features.csv')
-             )
-        regr_dataset = np.genfromtxt(
-            os.path.join(ml_regr_folder, 'dataset.csv'), delimiter=','
-            )
-        regr_labels = np.genfromtxt(
-            os.path.join(ml_regr_folder, 'labels.csv'), delimiter=','
-            )
-        self._ml_regr.fit(regr_dataset, regr_labels)
+              os.path.join(ml_regr_folder, 'features.csv')
+              )
+        # regr_dataset = np.genfromtxt(
+        #     os.path.join(ml_regr_folder, 'dataset.csv'), delimiter=','
+        #     )
+        # regr_labels = np.genfromtxt(
+        #     os.path.join(ml_regr_folder, 'labels.csv'), delimiter=','
+        #     )
+        # self._ml_regr.fit(regr_dataset, regr_labels)
 
     def _retrieve_ml_features(self, path):
         with open(path) as inputfile:
             rd = csv.reader(inputfile)
             return list(rd)[0]
 
-    def _initialize_government(self, sbp_payments_path):
+    def _initialize_government(self, sbp_payments_path,
+                               municipalities_pcf_path):
         """
         Called by the __init__ method.
 
@@ -221,7 +228,12 @@ class SBPAdoption(mesa.Model):
 
         """
         sbp_payments = pd.read_excel(sbp_payments_path, index_col='Year')
-        government = agents.Government(self.next_id(), self, sbp_payments)
+        with open(municipalities_pcf_path, newline='') as f:
+            reader = csv.reader(f)
+            municipalities_pcf = list(reader)[0]
+
+        government = agents.Government(self.next_id(), self,
+                                       sbp_payments, municipalities_pcf)
         return government
 
     def _initialize_municipalities_and_adoption(self):
@@ -357,6 +369,9 @@ class SBPAdoption(mesa.Model):
         self.cumul_adoption_tot_ha_port = (
             self.yearly_adoption_ha_port.sum()
             )
+        if np.isnan(self.cumul_adoption_tot_ha_port):
+            raise(ValueError("Error in calcualting cumulative adoption in"
+                             "calculating total adoption in Portugal (nan)"))
         self.cumul_adoption_tot_port = (
             self.cumul_adoption_tot_ha_port
             / self.perm_pastures_ref_port

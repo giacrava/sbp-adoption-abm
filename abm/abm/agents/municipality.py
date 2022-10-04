@@ -165,7 +165,8 @@ class Municipality(GeoAgent):
         attributes.update(self.census_data[self.model.year - 1])
         if estimator == 'regr':
             attributes['sbp_payment'] = (
-                self.model.government.retrieve_payments(year)
+                self.model.government.retrieve_payments(year,
+                                                        self.Municipality)
                     )
         environment = mappings.environments[self.Municipality]
         attributes.update(environment.average_climate)
@@ -176,7 +177,6 @@ class Municipality(GeoAgent):
             raise ValueError("The following attributes to input to the machine"
                              " learning model are missing: "
                              + ", ".join(missing_attr))
-        
         return attributes.to_frame().T
 
     def estimate_adoption(self, classifier, input_clsf, regressor, input_regr):
