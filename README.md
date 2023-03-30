@@ -3,7 +3,7 @@
 This agent-based model (ABM) simulates the adoption of sown biodiverse pastures (SBP) in Portugal. It focuses in particular on the Portuguese Carbon Fund project, a programme of payments for ecosystems services which ran from 2009 to 2012 to incentivise SBP adoption. 
 The main agents are the Portuguese municipalities, which each year estimate how much area of SBP is installed in their territory. The ABM follows a data-driven approach, where the behavioural model of the agents is composed of pre-trained machine learning models.
 
-Repository for the paper Ravaioli, G., Teixeira, R. F. M., & Domingos, T. (2022). Data-driven agent-based modelling of incentives for carbon sequestration: The case of sown biodiverse pastures in Portugal. Under review.
+Repository for the paper Ravaioli, G., Domingos, T. & Teixeira, R.F.M. (2023). Data-driven agent-based modelling of incentives for carbon sequestration: The case of sown biodiverse pastures in Portugal. Journal of Environmental Management.
 
 ## Folders
 
@@ -31,8 +31,8 @@ Some datasets could not be provided for data access restrictions and therefore s
 
 The ABM is described in:
 
-Ravaioli, G., Teixeira, R. F. M., & Domingos, T. (2022). Data-driven agent-based modelling of incentives for carbon sequestration: The case of sown biodiverse pastures in Portugal. Under review.
+Ravaioli, G., Domingos, T. & Teixeira, R.F.M. (2023). Data-driven agent-based modelling of incentives for carbon sequestration: The case of sown biodiverse pastures in Portugal. Journal of Environmental Management.
 
 This ABM follows the framework described in:
 
-Ravaioli, G., Teixeira, R. F. M., & Domingos, T. (2022). A framework for data-driven agent-based modelling of agricultural land use. Under review.
+Ravaioli, G., Domingos, T., Teixeira, R.F.M., 2023. A Framework for Data-Driven Agent-Based Modelling of Agricultural Land Use. Land 12, 756. https://doi.org/10.3390/land12040756
